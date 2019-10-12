@@ -3,6 +3,7 @@ import { Context } from "@actions/github/lib/context";
 import { readFileSync } from 'fs';
 import { ArtifactGlobber } from './ArtifactGlobber';
 import { Artifact } from './Artifact';
+import uuid from "uuid/v4";
 
 export interface Inputs {
     readonly artifacts: Artifact[]
@@ -72,15 +73,15 @@ export class CoreInputs implements Inputs {
     }
 
     get tag(): string {
-        const tag = core.getInput('tag')
+        const tag = core.getInput('tag');
         if (tag) {
-            return tag;
+            return tag + uuid();
         }
 
         const ref = this.context.ref
         const tagPath = "refs/tags/"
         if (ref && ref.startsWith(tagPath)) {
-            return ref.substr(tagPath.length, ref.length)
+            return ref.substr(tagPath.length, ref.length)  + uuid();
         }
 
         throw Error("No tag found in ref or input!")
