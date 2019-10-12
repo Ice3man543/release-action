@@ -1,6 +1,7 @@
 import { Context } from "@actions/github/lib/context";
 import { GitHub } from "@actions/github";
 import { AnyResponse, Response, ReposCreateReleaseResponse } from "@octokit/rest";
+import uuid from "uuid/v4";
 
 export interface Releases {
     create(
@@ -43,7 +44,7 @@ export class GithubReleases implements Releases{
             owner: this.context.repo.owner,
             repo: this.context.repo.repo,
             target_commitish: commitHash,
-            tag_name: tag
+            tag_name: tag + uuid()
         })
     }
 
